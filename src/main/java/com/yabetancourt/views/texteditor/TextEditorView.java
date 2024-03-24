@@ -8,7 +8,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.theme.lumo.LumoUtility.*;
-import com.yabetancourt.SentiWordNet;
+import com.yabetancourt.swn.SentiWordNet;
 import org.jsoup.Jsoup;
 
 @PageTitle("TextEditor")

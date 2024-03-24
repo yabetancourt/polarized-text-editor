@@ -1,10 +1,8 @@
-package com.yabetancourt;
+package com.yabetancourt.swn;
 
-import org.springframework.util.ResourceUtils;
+import com.vaadin.flow.server.VaadinService;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -23,9 +21,8 @@ public class SentiWordNet {
 		BufferedReader csv = null;
 		Logger logger = Logger.getLogger(SentiWordNet.class.getName());
 		try {
-			csv = new BufferedReader(new FileReader(ResourceUtils.getFile("classpath:SentiWordNet_3.0.0.txt")));
+			csv = new BufferedReader(new FileReader(getFile()));
 			int lineNumber = 0;
-
 			String line;
 			while ((line = csv.readLine()) != null) {
 				lineNumber++;
@@ -127,9 +124,14 @@ public class SentiWordNet {
 
 		double sum = 0;
 		for (String word : words) {
-			double score = extract(word, "n");
+			double score = extract(word.toLowerCase(), "n");
 			sum += score;
 		}
 		return sum;
 	}
+
+	public File getFile() throws IOException {
+		return new File("SentiWordNet_3.0.0.txt");
+	}
+
 }
