@@ -1,8 +1,9 @@
 package com.yabetancourt.swn;
 
-import com.vaadin.flow.server.VaadinService;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -130,7 +131,7 @@ public class SentiWordNet {
 		return sum;
 	}
 
-	public File getFile() throws IOException {
+	public File getFile() {
 		return new File("SentiWordNet_3.0.0.txt");
 	}
 
