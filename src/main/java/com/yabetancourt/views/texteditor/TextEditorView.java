@@ -17,13 +17,12 @@ import org.jsoup.Jsoup;
 public class TextEditorView extends Main {
 
     private final SentiWordNet swn = new SentiWordNet();
-    Div dl = new Div();
-    Div board = new Div();
+    Div wordAnalysis = new Div();
+    Div resume = new Div();
 
     public TextEditorView() {
         addClassNames(Display.FLEX, Flex.GROW, Height.FULL);
 
-        // Editor
         RichTextEditor editor = new RichTextEditor();
         editor.addClassNames(Border.RIGHT, BorderColor.CONTRAST_10, Flex.GROW);
         editor.addThemeVariants(RichTextEditorVariant.LUMO_NO_BORDER);
@@ -31,22 +30,21 @@ public class TextEditorView extends Main {
 
         editor.addValueChangeListener(e -> {
             String words = Jsoup.parse(e.getValue()).text();
-            dl.removeAll();
+            wordAnalysis.removeAll();
             double total = 0.0;
             for (String word : words.split(" +")) {
                 double score = swn.score(word);
                 total += score;
                 if (score < 0) {
-                    dl.add(createErrorBadgeItem(word));
+                    wordAnalysis.add(createErrorBadgeItem(word));
                 } else if (score > 0) {
-                    dl.add(createSuccessBadgeItem(word));
+                    wordAnalysis.add(createSuccessBadgeItem(word));
                 } else {
-                    dl.add(createNeutralBadgeItem(word));
+                    wordAnalysis.add(createNeutralBadgeItem(word));
                 }
             }
-            board.removeAll();
-            board.add(createGeneralDetails(total));
-
+            resume.removeAll();
+            resume.add(createGeneralDetails(total));
 
         });
 
@@ -62,42 +60,42 @@ public class TextEditorView extends Main {
         H2 title = new H2("Text details");
         title.addClassName(Accessibility.SCREEN_READER_ONLY);
 
-        dl.addClassNames(Display.FLEX, FlexDirection.ROW, FlexWrap.WRAP, Gap.XSMALL, Margin.Bottom.SMALL, Margin.Top.NONE,
+        wordAnalysis.addClassNames(Display.FLEX, FlexDirection.ROW, FlexWrap.WRAP, Gap.XSMALL, Margin.Bottom.SMALL, Margin.Top.NONE,
                 FontSize.SMALL, Overflow.AUTO);
-        board.addClassNames(Margin.Top.AUTO);
-        sidebar.add(title, dl, board);
+        resume.addClassNames(Margin.Top.AUTO);
+        sidebar.add(title, wordAnalysis, resume);
         return sidebar;
     }
 
     private Div createErrorBadgeItem(String value) {
-        return new Div(createDescription(value, "badge", "error"));
+        return new Div(createBadge(value, "badge", "error"));
     }
 
     private Div createSuccessBadgeItem(String value) {
-        return new Div(createDescription(value, "badge", "success"));
+        return new Div(createBadge(value, "badge", "success"));
     }
 
     private Div createNeutralBadgeItem(String value) {
-        return new Div(createDescription(value, "badge", "contrast"));
+        return new Div(createBadge(value, "badge", "contrast"));
     }
 
-    private Span createDescription(String value, String... themeNames) {
-        Span desc = new Span(value);
-        desc.addClassName(Margin.Left.NONE);
+    private Span createBadge(String value, String... themeNames) {
+        Span badge = new Span(value);
+        badge.addClassName(Margin.Left.NONE);
         for (String themeName : themeNames) {
-            desc.getElement().getThemeList().add(themeName);
+            badge.getElement().getThemeList().add(themeName);
         }
-        return desc;
+        return badge;
     }
 
     private Div createGeneralDetails(double total) {
         Span category;
         if (total > 0) {
-            category = createDescription("Your text is positive", "badge", "success");
+            category = createBadge("Your text is positive", "badge", "success");
         } else if (total < 0) {
-            category = createDescription("Your text is negative", "badge", "error");
+            category = createBadge("Your text is negative", "badge", "error");
         } else {
-            category = createDescription("Your text is objective", "badge", "contrast");
+            category = createBadge("Your text is objective", "badge", "contrast");
         }
         Div div = new Div(category);
         div.addClassNames(Display.FLEX, FlexDirection.ROW, FontSize.MEDIUM, AlignItems.CENTER, JustifyContent.CENTER);

@@ -7,19 +7,21 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class SentiWordNet {
 
-	private Map<String, Double> dictionary;
+	private final Map<String, Double> dictionary;
 
 	public SentiWordNet() {
 		// This is our main dictionary representation
-		dictionary = new HashMap<String, Double>();
+		dictionary = new HashMap<>();
 
 		// From String to list of doubles.
-		HashMap<String, HashMap<Integer, Double>> tempDictionary = new HashMap<String, HashMap<Integer, Double>>();
+		HashMap<String, HashMap<Integer, Double>> tempDictionary = new HashMap<>();
 
 		BufferedReader csv = null;
+		Logger logger = Logger.getLogger(SentiWordNet.class.getName());
 		try {
 			csv = new BufferedReader(new FileReader(ResourceUtils.getFile("classpath:SentiWordNet_3.0.0.txt")));
 			int lineNumber = 0;
@@ -67,7 +69,7 @@ public class SentiWordNet {
 						// Add map to term if it doesn't have one
 						if (!tempDictionary.containsKey(synTerm)) {
 							tempDictionary.put(synTerm,
-									new HashMap<Integer, Double>());
+                                    new HashMap<>());
 						}
 
 						// Add synset link to synterm
@@ -99,13 +101,13 @@ public class SentiWordNet {
 				dictionary.put(word, score);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe(e.getMessage());
 		} finally {
 			if (csv != null) {
 				try {
 					csv.close();
 				} catch (IOException e) {
-					throw new RuntimeException(e);
+					logger.severe(e.getMessage());
 				}
 			}
 		}
@@ -113,7 +115,7 @@ public class SentiWordNet {
 
 	public double extract(String word, String pos) {
 		String key = word + "#" + pos;
-		if (dictionary.keySet().contains(key)) {
+		if (dictionary.containsKey(key)) {
 			return dictionary.get(word + "#" + pos);
 		} else {
 			return 0.0;

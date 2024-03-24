@@ -18,7 +18,6 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 @Theme(value = "polarized-editor", variant = Lumo.DARK)
-//@EnableAutoConfiguration(exclude )
 public class Application implements AppShellConfigurator {
 
     public static void main(String[] args) {
