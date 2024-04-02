@@ -111,7 +111,7 @@ public class SentiWordNet {
 		}
 	}
 
-	public double extract(String word, String pos) {
+	private double extract(String word, String pos) {
 		String key = word + "#" + pos;
 		if (dictionary.containsKey(key)) {
 			return dictionary.get(word + "#" + pos);
@@ -121,14 +121,8 @@ public class SentiWordNet {
 	}
 
 	public double score(String inputText) {
-		String[] words = inputText.split("\\s"); // Split by "Whitespace" chars
-
-		double sum = 0;
-		for (String word : words) {
-			double score = extract(word.toLowerCase(), "n");
-			sum += score;
-		}
-		return sum;
+		inputText = inputText.replaceAll("[^a-zA-Z]", "");
+		return extract(inputText.toLowerCase(), "n");
 	}
 
 	public File getFile() {
