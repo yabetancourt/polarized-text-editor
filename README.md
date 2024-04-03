@@ -1,7 +1,18 @@
-# Polarized Text Edito
+# Polarized Text Editor
 
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
+This project implements an English text editor that illustrates the polarity of each word as it is typed using colors. 
+
+The editor uses the SentiWordNet tool to calculate the polarity of each word. The polarity of a word p is calculated as follows:
+
+polarity(p) = (positivity(p) - negativity(p)) / (positivity(p) + negativity(p))
+
+Where positivity(p) and negativity(p) are the positivity and negativity values provided by SentiWordNet.
+
+It is important to note that a word can be in several synsets (i.e., it can have several meanings) within SentiWordNet. Therefore, it can have different positivity and negativity values in each of them.
+## Features
+
+    Real-time polarity coloring of words as they are typed
+    Support for multiple synsets per word
 
 ## Running the application
 
